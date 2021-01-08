@@ -7,36 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Eccomerce.Areas.Admin.Data;
 using Eccomerce.Areas.Admin.Models;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Eccomerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class TypeProductsController : Controller
+    public class SizesController : Controller
     {
         private readonly DPContext _context;
 
-        public TypeProductsController(DPContext context)
+        public SizesController(DPContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/TypeProducts
-        public async Task<IActionResult> Index(int? id)
+        // GET: Admin/Sizes
+        public async Task<IActionResult> Index()
         {
-            TypeProduct typeProduct = null;
-            if (id!=null)
-            {
-                typeProduct = await _context.typeProduct.FirstOrDefaultAsync(m => m.Id == id);
-            }
-            return View(typeProduct);
+            return View(await _context.size.ToListAsync());
         }
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-            ViewBag.ListProduct = _context.typeProduct.ToList();
-            base.OnActionExecuted(context);
-        }
-        // GET: Admin/TypeProducts/Details/5
+
+        // GET: Admin/Sizes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,39 +34,39 @@ namespace Eccomerce.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var typeProduct = await _context.typeProduct
+            var size = await _context.size
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (typeProduct == null)
+            if (size == null)
             {
                 return NotFound();
             }
 
-            return View(typeProduct);
+            return View(size);
         }
 
-        // GET: Admin/TypeProducts/Create
+        // GET: Admin/Sizes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/TypeProducts/Create
+        // POST: Admin/Sizes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Status")] TypeProduct typeProduct)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Size size)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(typeProduct);
+                _context.Add(size);
                 await _context.SaveChangesAsync();
-                
+                return RedirectToAction(nameof(Index));
             }
-            return View("Index");
+            return View(size);
         }
 
-        // GET: Admin/TypeProducts/Edit/5
+        // GET: Admin/Sizes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,22 +74,22 @@ namespace Eccomerce.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var typeProduct = await _context.typeProduct.FindAsync(id);
-            if (typeProduct == null)
+            var size = await _context.size.FindAsync(id);
+            if (size == null)
             {
                 return NotFound();
             }
-            return View(typeProduct);
+            return View(size);
         }
 
-        // POST: Admin/TypeProducts/Edit/5
+        // POST: Admin/Sizes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Status")] TypeProduct typeProduct)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Size size)
         {
-            if (id != typeProduct.Id)
+            if (id != size.Id)
             {
                 return NotFound();
             }
@@ -108,12 +98,12 @@ namespace Eccomerce.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(typeProduct);
+                    _context.Update(size);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TypeProductExists(typeProduct.Id))
+                    if (!SizeExists(size.Id))
                     {
                         return NotFound();
                     }
@@ -122,12 +112,12 @@ namespace Eccomerce.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                
+                return RedirectToAction(nameof(Index));
             }
-            return View("Index");
+            return View(size);
         }
 
-        // GET: Admin/TypeProducts/Delete/5
+        // GET: Admin/Sizes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,30 +125,30 @@ namespace Eccomerce.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var typeProduct = await _context.typeProduct
+            var size = await _context.size
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (typeProduct == null)
+            if (size == null)
             {
                 return NotFound();
             }
 
-            return View(typeProduct);
+            return View(size);
         }
 
-        // POST: Admin/TypeProducts/Delete/5
+        // POST: Admin/Sizes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var typeProduct = await _context.typeProduct.FindAsync(id);
-            _context.typeProduct.Remove(typeProduct);
+            var size = await _context.size.FindAsync(id);
+            _context.size.Remove(size);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TypeProductExists(int id)
+        private bool SizeExists(int id)
         {
-            return _context.typeProduct.Any(e => e.Id == id);
+            return _context.size.Any(e => e.Id == id);
         }
     }
 }
