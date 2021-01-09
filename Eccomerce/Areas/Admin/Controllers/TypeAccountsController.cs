@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Eccomerce.Areas.Admin.Data;
 using Eccomerce.Areas.Admin.Models;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Eccomerce.Areas.Admin.Controllers
 {
@@ -20,10 +21,21 @@ namespace Eccomerce.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/TypeAccounts
-        public async Task<IActionResult> Index()
+        public override void OnActionExecuted(ActionExecutedContext context)
         {
-            return View(await _context.typeAccount.ToListAsync());
+            ViewBag.ListTAccount = _context.typeAccount.ToList();
+            base.OnActionExecuted(context);
+        }
+
+        // GET: Admin/TypeAccounts
+        public async Task<IActionResult> Index(int? id)
+        {
+            TypeAccount typeAccount = null;
+            if (id!=null)
+            {
+                typeAccount = await _context.typeAccount.FirstOrDefaultAsync(m => m.Id == id);
+            }
+            return View(typeAccount);
         }
 
         // GET: Admin/TypeAccounts/Details/5
@@ -61,9 +73,9 @@ namespace Eccomerce.Areas.Admin.Controllers
             {
                 _context.Add(typeAccount);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                
             }
-            return View(typeAccount);
+            return View("Index");
         }
 
         // GET: Admin/TypeAccounts/Edit/5
@@ -112,9 +124,9 @@ namespace Eccomerce.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                
             }
-            return View(typeAccount);
+            return View("Index");
         }
 
         // GET: Admin/TypeAccounts/Delete/5

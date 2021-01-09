@@ -1,29 +1,28 @@
-﻿@model IEnumerable<Eccomerce.Areas.Admin.Models.TypeAccount>
+﻿@model Eccomerce.Areas.Admin.Models.TypeAccount
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-
+<partial name="Create"/>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Index" asp-route-id="">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Tên Loại
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+               Trạng Thái
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (TypeAccount item in ViewBag.ListTAccount)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -32,11 +31,53 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.Id">Edit</a>
+                <button class="btn btn-warning" name="btn_update_stt" data-id="@item.Id" data-stt="@(item.Status==true?0:1)"
+                        data-name="@item.Name">
+                    @{ if (item.Status == true)
+                        {
+                        @:Hide
+                    }
+                        else
+                        {
+                        @:Show
+                    }
+                        }
+                </button>
             </td>
         </tr>
 }
     </tbody>
 </table>
+@section Scripts{ 
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $('button[name=btn_update_stt]').click(function () {
+        var id = $(this).attr('data-id');
+        var name = $(this).attr('data-name');
+        var stt = ($(this).attr('data-stt') == 0 ? false : true)
+        $.ajax({
+            method: "PUT",
+            url: "../api/TypeAccounts_API/PutTypeAccount/" + id,
+            contentType: 'application/json; charset=UTF-8',
+            data: JSON.stringify({ "Id": parseInt(id), "Name": name, "Status": stt })
+        })
+            .done(function (msg) {
+                if (msg=='0') {
+                    aler = ('Update Fail');
+                }
+                else {
+                    var r = JSON.parse(msg);
+                    if (r.stt == 'True') {
+                        $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Ẩn');
+                    }
+                    else {
+                        $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Hiện');
+                    }
+                    alert('Cập nhật thành công');
+                    location.reload();
+                }
+            });
+    })
+</script>
+}

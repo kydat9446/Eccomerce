@@ -7,36 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Eccomerce.Areas.Admin.Data;
 using Eccomerce.Areas.Admin.Models;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Eccomerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class TypeProductsController : Controller
+    public class BillsController : Controller
     {
         private readonly DPContext _context;
 
-        public TypeProductsController(DPContext context)
+        public BillsController(DPContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/TypeProducts
-        public async Task<IActionResult> Index(int? id)
+        // GET: Admin/Bills
+        public async Task<IActionResult> Index()
         {
-            TypeProduct typeProduct = null;
-            if (id!=null)
-            {
-                typeProduct = await _context.typeProduct.FirstOrDefaultAsync(m => m.Id == id);
-            }
-            return View(typeProduct);
+            var dPContext = _context.bill.Include(b => b.Customer);
+            return View(await dPContext.ToListAsync());
         }
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-            ViewBag.ListProduct = _context.typeProduct.ToList();
-            base.OnActionExecuted(context);
-        }
-        // GET: Admin/TypeProducts/Details/5
+
+        // GET: Admin/Bills/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,39 +35,42 @@ namespace Eccomerce.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var typeProduct = await _context.typeProduct
+            var bill = await _context.bill
+                .Include(b => b.Customer)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (typeProduct == null)
+            if (bill == null)
             {
                 return NotFound();
             }
 
-            return View(typeProduct);
+            return View(bill);
         }
 
-        // GET: Admin/TypeProducts/Create
+        // GET: Admin/Bills/Create
         public IActionResult Create()
         {
+            ViewData["CustomerId"] = new SelectList(_context.account, "Id", "Id");
             return View();
         }
 
-        // POST: Admin/TypeProducts/Create
+        // POST: Admin/Bills/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Status")] TypeProduct typeProduct)
+        public async Task<IActionResult> Create([Bind("Id,CustomerId,Total,Date,Status")] Bill bill)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(typeProduct);
+                _context.Add(bill);
                 await _context.SaveChangesAsync();
-                
+                return RedirectToAction(nameof(Index));
             }
-            return View("Index");
+            ViewData["CustomerId"] = new SelectList(_context.account, "Id", "Id", bill.CustomerId);
+            return View(bill);
         }
 
-        // GET: Admin/TypeProducts/Edit/5
+        // GET: Admin/Bills/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,22 +78,23 @@ namespace Eccomerce.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var typeProduct = await _context.typeProduct.FindAsync(id);
-            if (typeProduct == null)
+            var bill = await _context.bill.FindAsync(id);
+            if (bill == null)
             {
                 return NotFound();
             }
-            return View(typeProduct);
+            ViewData["CustomerId"] = new SelectList(_context.account, "Id", "Id", bill.CustomerId);
+            return View(bill);
         }
 
-        // POST: Admin/TypeProducts/Edit/5
+        // POST: Admin/Bills/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Status")] TypeProduct typeProduct)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,Total,Date,Status")] Bill bill)
         {
-            if (id != typeProduct.Id)
+            if (id != bill.Id)
             {
                 return NotFound();
             }
@@ -108,12 +103,12 @@ namespace Eccomerce.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(typeProduct);
+                    _context.Update(bill);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TypeProductExists(typeProduct.Id))
+                    if (!BillExists(bill.Id))
                     {
                         return NotFound();
                     }
@@ -122,12 +117,13 @@ namespace Eccomerce.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                
+                return RedirectToAction(nameof(Index));
             }
-            return View("Index");
+            ViewData["CustomerId"] = new SelectList(_context.account, "Id", "Id", bill.CustomerId);
+            return View(bill);
         }
 
-        // GET: Admin/TypeProducts/Delete/5
+        // GET: Admin/Bills/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,30 +131,31 @@ namespace Eccomerce.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var typeProduct = await _context.typeProduct
+            var bill = await _context.bill
+                .Include(b => b.Customer)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (typeProduct == null)
+            if (bill == null)
             {
                 return NotFound();
             }
 
-            return View(typeProduct);
+            return View(bill);
         }
 
-        // POST: Admin/TypeProducts/Delete/5
+        // POST: Admin/Bills/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var typeProduct = await _context.typeProduct.FindAsync(id);
-            _context.typeProduct.Remove(typeProduct);
+            var bill = await _context.bill.FindAsync(id);
+            _context.bill.Remove(bill);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TypeProductExists(int id)
+        private bool BillExists(int id)
         {
-            return _context.typeProduct.Any(e => e.Id == id);
+            return _context.bill.Any(e => e.Id == id);
         }
     }
 }
