@@ -51,7 +51,7 @@ namespace Eccomerce.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
-            ViewData["Catid"] = new SelectList(_context.typeProduct, "Id", "Id");
+            ViewData["Catid"] = new SelectList(_context.typeProduct, "Id", "Name");
             return View();
         }
 
