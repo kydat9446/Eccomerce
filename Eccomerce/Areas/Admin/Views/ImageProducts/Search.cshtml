@@ -1,0 +1,29 @@
+﻿@{ 
+    if(ViewContext.RouteData.Values["id"]!=null)
+    {
+        <p>
+            <a asp-action="Index" asp-route-id="">Create New</a>
+        </p>
+    }
+}
+<hr />
+<div class="container-fluid mt-3">
+    <form asp-action="Index" method="get">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                <input type="text" placeholder="Input name product..." id="s_name" name="s_name" class="form-control" 
+                       @(Context.Request.Query["s_name"]!=""?("value="+Context.Request.Query["s_name"]):null) >
+            </div>
+            <div class="col-auto">
+                <select class="custom-select" name="s_stt">
+                    <option value="">All</option>
+                    <option value="true">Hide</option>
+                    <option value="false">Show</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</div>

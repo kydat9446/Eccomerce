@@ -21,5 +21,6 @@ namespace Eccomerce.Areas.Admin.Data
         public DbSet<Size> size { get; set; }
         public DbSet<Bill> bill { get; set; }
         public DbSet<BillDetail> billDetail { get; set; }
+        public DbSet<ImageProduct> imageProduct { get; set; }
     }
 }
