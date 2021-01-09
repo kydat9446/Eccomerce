@@ -4,29 +4,31 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
-
-<h4>Size</h4>
+<h2>@(ViewContext.RouteData.Values["id"] != null ? "Chỉnh sửa size" : "Thêm Mới Size")</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="@(ViewContext.RouteData.Values["id"] != null ? "Edit" : "Create")"
+              asp-route-id="@(ViewContext.RouteData.Values["id"] != null ? ViewContext.RouteData.Values["id"] :"")">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{ 
+                if (ViewContext.RouteData.Values["id"] != null)
+                {
+                    <input type ="hidden" asp-for="Id"/>
+                }
+            }
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="@(ViewContext.RouteData.Values["id"]!=null?"Cập Nhật" : "Thêm mới")" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

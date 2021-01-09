@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Eccomerce.Areas.Admin.Data;
 using Eccomerce.Areas.Admin.Models;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Eccomerce.Areas.Admin.Controllers
 {
@@ -58,11 +60,20 @@ namespace Eccomerce.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,Description,Status,Catid")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,Description,Status,Catid")] Product product, IFormFile ful)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(product);
+                await _context.SaveChangesAsync();
+                var path = Path.Combine(
+                    Directory.GetCurrentDirectory(), "wwwroot/images/product", product.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await ful.CopyToAsync(stream);
+                }
+                product.Image = product.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                _context.Update(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
