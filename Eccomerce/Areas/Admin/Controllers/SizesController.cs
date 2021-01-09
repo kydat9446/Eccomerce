@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Eccomerce.Areas.Admin.Data;
 using Eccomerce.Areas.Admin.Models;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Eccomerce.Areas.Admin.Controllers
 {
@@ -19,11 +20,20 @@ namespace Eccomerce.Areas.Admin.Controllers
         {
             _context = context;
         }
-
-        // GET: Admin/Sizes
-        public async Task<IActionResult> Index()
+        public override void OnActionExecuted(ActionExecutedContext context)
         {
-            return View(await _context.size.ToListAsync());
+            ViewBag.ListSize = _context.size.ToList();
+            base.OnActionExecuted(context);
+        }
+        // GET: Admin/Sizes
+        public async Task<IActionResult> Index(int? id)
+        {
+            Size size = null;
+            if (id != null)
+            {
+                size = await _context.size.FirstOrDefaultAsync(m => m.Id == id);
+            }
+            return View(size);
         }
 
         // GET: Admin/Sizes/Details/5
@@ -61,9 +71,8 @@ namespace Eccomerce.Areas.Admin.Controllers
             {
                 _context.Add(size);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            return View(size);
+            return View("Index");
         }
 
         // GET: Admin/Sizes/Edit/5
@@ -111,10 +120,9 @@ namespace Eccomerce.Areas.Admin.Controllers
                     {
                         throw;
                     }
-                }
-                return RedirectToAction(nameof(Index));
+                }            
             }
-            return View(size);
+            return View("Index");
         }
 
         // GET: Admin/Sizes/Delete/5
