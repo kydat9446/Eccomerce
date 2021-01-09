@@ -1,4 +1,25 @@
-﻿<!-- header -->
+﻿@{
+    var data = Context.Session.GetString("cart");
+
+    int coutCart = 0;
+    if (data == null)
+    {
+        coutCart = 0;
+    }
+    else
+    {
+        var data2 = Context.Session.GetString("cart");
+        List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(data2);
+        foreach (var item in dataCart)
+        {
+            coutCart += item.Quantity;
+        }
+
+    }
+
+}
+
+<!-- header -->
 <div class="header" id="home">
     <div class="container">
         <ul>
@@ -133,11 +154,22 @@
         </div>
         <div class="top_nav_right">
             <div class="wthreecartaits wthreecartaits2 cart cart box_1">
-                <form action="#" method="post" class="last">
-                    <input type="hidden" name="cmd" value="_cart">
-                    <input type="hidden" name="display" value="1">
-                    <button class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-                </form>
+                <a asp-area=""
+                   asp-controller="Home"
+                   asp-action="ListCart"
+                   style="padding:10px;">
+                    Cart
+                    <i class="fa fa-shopping-cart fa-2x"></i>
+                    <!--Biến để đếm số sản phẩm có trong giỏ hàng-->
+                    @coutCart
+                </a>
+
+                <!--<a asp-action="#"></a>-->
+                <!--<form action="#" method="post" class="last">
+        <input type="hidden" name="cmd" value="_cart">
+        <input type="hidden" name="display" value="1">
+        <button class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+    </form>-->
 
             </div>
         </div>

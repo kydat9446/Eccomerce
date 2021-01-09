@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "ListCart";
+    int TotalMoney = 0;
+
+}
+<style>
+    td, th {
+        padding: 10px;
+    }
+</style>
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".updateCart").click(function (event) {
+            event.preventDefault();
+            var quantity = $(".quantity_" + $(this).attr("data-id")).val();
+            console.log(quantity);
+            $.ajax({
+                type: "POST",
+                url:"@Url.Action("updateCart","Home")",
+                data: {
+                    id: $(this).attr("data-id"),
+                    quantity:quantity
+                },
+                success: function (result) {
+                    window.location.href = '@Url.Action("ListCart","Home")';
+                }
+            });
+        });
+    });
+</script>
+
+
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-body ">
+
+            <h3 class="agileinfo_sign"><span>Cart</span></h3>
+            <form action="#" method="post">
+                <div class="styled-input">
+                    <div class="list-cart">
+                        <table class="cart" border="1">
+                            <tr>
+                                <th>STT</th>
+                                <th>Title</th>
+                                <th>Image</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total Price</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                            @{
+                                int STT = 0;
+                                foreach (var item in ViewBag.carts)
+                                {
+                                    string txt_class = "quantity_" + item.Product.Id;
+                                    STT++;
+
+                                    int total = item.Product.Price * item.Quantity;
+                                    TotalMoney = TotalMoney + total;
+                                    <tr>
+                                        <td>@STT</td>
+                                        <td>@item.Product.Name</td>
+                                        <td><img src="~/images/product/@item.Product.Image" width="100" height="100" /></td>
+                                        <td><input type="number" class="@txt_class" value="@item.Quantity" min="0" /></td>
+                                        <td>@item.Product.Price</td>
+                                        <td>@total</td>
+                                        <td><a href="" data-id="@item.Product.Id" class="updateCart">Update</a></td>
+                                        <td><a asp-controller="Home" asp-action="deleteCart" asp-route-id="@item.Product.Id">Delete</a></td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="2">Total Bill:</td>
+                                    <td colspan="6">@TotalMoney</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-8 modal_body_right modal_body_right1 " style="padding-bottom:5px">
+                    <input class="btn btn-primary" type="submit" value="Pay Now">
+                </div>
+            </form>
+            <p><a asp-controller="Home" asp-action="Index"> Get back to shop</a></p>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- //Modal content-->

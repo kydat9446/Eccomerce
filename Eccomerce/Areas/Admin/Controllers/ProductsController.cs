@@ -9,6 +9,7 @@ using Eccomerce.Areas.Admin.Data;
 using Eccomerce.Areas.Admin.Models;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace Eccomerce.Areas.Admin.Controllers
 {
@@ -168,5 +169,8 @@ namespace Eccomerce.Areas.Admin.Controllers
         {
             return _context.product.Any(e => e.Id == id);
         }
+
+        
+
     }
 }
