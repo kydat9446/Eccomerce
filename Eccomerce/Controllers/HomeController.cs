@@ -11,7 +11,6 @@ using Eccomerce.Areas.Admin.Models;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http;
-
 namespace Eccomerce.Controllers
 {
     public class HomeController : Controller
@@ -24,6 +23,37 @@ namespace Eccomerce.Controllers
         }
         public IActionResult Index()
         {
+            ViewBag.TypeProduct = _context.typeProduct;
+            ViewBag.ListProduct = _context.product;
+            //T-Shirts
+            var tShirts = (from products in _context.product
+                           where products.Catid == 1
+                           orderby products.Id descending
+                           select products
+                           ).ToList();
+            ViewBag.TShirt = tShirts;
+            //Pant
+            var Pant = (from products in _context.product
+                           where products.Catid == 2
+                           orderby products.Id descending
+                           select products
+                           ).ToList();
+            ViewBag.Pant = Pant;
+            //Shoes
+            var Shoes = (from products in _context.product
+                           where products.Catid == 3
+                           orderby products.Id descending
+                           select products
+                           ).ToList();
+            ViewBag.Shoes = Shoes;
+            //Hoodie
+            var Hoodie = (from products in _context.product
+                           where products.Catid == 4
+                           orderby products.Id descending
+                           select products
+                           ).ToList();
+            ViewBag.Hoodie = Hoodie;
+
             return View();
         }
 
