@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    @model IEnumerable<Eccomerce.Areas.Admin.Models.Product>
+}
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-body modal-body-sub_agile">
+            <div class="col-md-8modal_body_right modal_body_right1">
+                <h3 class="agileinfo_sign"><span>Cart</span></h3>
+
+                <h1>Your Cart is empty, buy something!!!</h1>
+                <div class="clearfix"></div>
+                <p><a asp-controller="Home" asp-action="Index"> Get back to shop</a></p>
+
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- //Modal content-->
+</div>
