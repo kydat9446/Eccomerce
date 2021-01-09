@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Eccomerce.Migrations
 {
-    public partial class Add_Size_Bill_Bill_Detail : Migration
+    public partial class IntitalCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,12 +55,12 @@ namespace Eccomerce.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
                     Image = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(maxLength: 10, nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
                     Catid = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -121,6 +121,27 @@ namespace Eccomerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "imageProduct",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdProduct = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_imageProduct", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_imageProduct_product_IdProduct",
+                        column: x => x.IdProduct,
+                        principalTable: "product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "billDetail",
                 columns: table => new
                 {
@@ -169,6 +190,11 @@ namespace Eccomerce.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_imageProduct_IdProduct",
+                table: "imageProduct",
+                column: "IdProduct");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_product_Catid",
                 table: "product",
                 column: "Catid");
@@ -178,6 +204,9 @@ namespace Eccomerce.Migrations
         {
             migrationBuilder.DropTable(
                 name: "billDetail");
+
+            migrationBuilder.DropTable(
+                name: "imageProduct");
 
             migrationBuilder.DropTable(
                 name: "size");

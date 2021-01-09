@@ -41,8 +41,8 @@ namespace Eccomerce.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -50,8 +50,8 @@ namespace Eccomerce.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
@@ -115,6 +115,29 @@ namespace Eccomerce.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("billDetail");
+                });
+
+            modelBuilder.Entity("Eccomerce.Areas.Admin.Models.ImageProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("IdProduct")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdProduct");
+
+                    b.ToTable("imageProduct");
                 });
 
             modelBuilder.Entity("Eccomerce.Areas.Admin.Models.Product", b =>
@@ -229,6 +252,15 @@ namespace Eccomerce.Migrations
                     b.HasOne("Eccomerce.Areas.Admin.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Eccomerce.Areas.Admin.Models.ImageProduct", b =>
+                {
+                    b.HasOne("Eccomerce.Areas.Admin.Models.Product", "product")
+                        .WithMany()
+                        .HasForeignKey("IdProduct")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

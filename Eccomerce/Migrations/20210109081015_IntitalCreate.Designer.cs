@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Eccomerce.Migrations
 {
     [DbContext(typeof(DPContext))]
-    [Migration("20210108093758_Add_Size_Bill_Bill_Detail")]
-    partial class Add_Size_Bill_Bill_Detail
+    [Migration("20210109081015_IntitalCreate")]
+    partial class IntitalCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,19 +35,25 @@ namespace Eccomerce.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
@@ -111,6 +117,29 @@ namespace Eccomerce.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("billDetail");
+                });
+
+            modelBuilder.Entity("Eccomerce.Areas.Admin.Models.ImageProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("IdProduct")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdProduct");
+
+                    b.ToTable("imageProduct");
                 });
 
             modelBuilder.Entity("Eccomerce.Areas.Admin.Models.Product", b =>
@@ -225,6 +254,15 @@ namespace Eccomerce.Migrations
                     b.HasOne("Eccomerce.Areas.Admin.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Eccomerce.Areas.Admin.Models.ImageProduct", b =>
+                {
+                    b.HasOne("Eccomerce.Areas.Admin.Models.Product", "product")
+                        .WithMany()
+                        .HasForeignKey("IdProduct")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
