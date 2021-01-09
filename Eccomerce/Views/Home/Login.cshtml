@@ -4,20 +4,35 @@
         <div class="modal-body modal-body-sub_agile">
             <div class="col-md-8 modal_body_left modal_body_left1">
                 <h3 class="agileinfo_sign">Sign In <span>Now</span></h3>
-                <form action="#" method="post">
-                    <div class="styled-input agile-styled-input-top">
-                        <input type="text" name="Name" required="">
-                        <label>Name</label>
-                        <span></span>
-                    </div>
+
+                <form asp-controller="Home" asp-action="Login" method="post">
+
                     <div class="styled-input">
                         <input type="email" name="Email" required="">
                         <label>Email</label>
                         <span></span>
                     </div>
+                    <div class="styled-input">
+                        <input type="password" name="Password" required="">
+                        <label>Password</label>
+                        <span></span>
+                    </div>
+                    <div>
+                    @if (ViewBag.error != null)
+                    {
+                        <div>
+                        <span class="badge badge-danger">@ViewBag.error</span>
+                        </div>
+                        <br />
+                    }
+                    </div>
                     <input type="submit" value="Sign In">
                 </form>
-                
+                <br />
+                <div>
+                <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+                </fb:login-button>
+                    </div>
                 <div class="clearfix"></div>
                 <p><a href="#" data-toggle="modal" data-target="#myModal2"> Don't have an account?</a></p>
             </div>            

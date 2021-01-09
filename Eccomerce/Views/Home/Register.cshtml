@@ -1,0 +1,76 @@
+﻿@using Eccomerce.Areas.Admin.Models;
+@model Account
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-body modal-body-sub_agile">
+            <div class="col-md-8 modal_body_left modal_body_left1">
+                <h3 class="agileinfo_sign">Sign Up <span>Now</span></h3>
+                <form asp-controller="Home" asp-action="Register" method="post">
+                    <div class="styled-input agile-styled-input-top">
+                        <input asp-for="Name" required="">
+                        <label>Name</label>
+                        <span></span>
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <div class="styled-input">
+                        <input type="email" asp-for="Email" required="">
+                        <label>Email</label>
+                        <span></span>
+                    </div>
+
+                    @if (ViewBag.error != null)
+                    {
+                      
+                            <span class="badge badge-danger">@ViewBag.error</span>
+                       
+                    }
+
+                    <div class="styled-input">
+                        <input asp-for="Phone" required="">
+                        <label>Phone</label>
+                        <span></span>
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <div class="styled-input">
+                        <input asp-for="Address" required="">
+                        <label>Address</label>
+                        <span></span>
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <div class="styled-input">
+                        <input type="password" asp-for="Password" required="">
+                        <label>Password</label>
+                        <span></span>
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <div class="styled-input">
+                        <input type="password" asp-for="ConfirmPassword" required="">
+                        <label>Confirm Password</label>
+                        <span></span>
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <br />
+                    <input type="submit" value="Sign Up">
+                </form>
+
+                <div class="clearfix"></div>
+                <p><a href="#">By clicking register, I agree to your terms</a></p>
+
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- //Modal content-->
+</div>

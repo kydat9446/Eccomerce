@@ -2,8 +2,18 @@
 <div class="header" id="home">
     <div class="container">
         <ul>
-            <li> <a asp-action="Login"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign In </a></li>
-            <li> <a asp-action="Regsiter"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sign Up </a></li>
+
+            @if (@HttpContextAccessor.HttpContext.Session.GetString("Name") != null)
+            {
+                <li> <i class="fa fa-unlock-alt" aria-hidden="true"></i>@HttpContextAccessor.HttpContext.Session.GetString("Name")</li>
+                <li> <a asp-controller="Home" asp-action="Logout"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Logout </a></li>
+
+            }
+            else
+            {
+                <li> <a asp-action="Login"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign In </a></li>
+                <li> <a asp-action="Register"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sign Up </a></li>
+            }
             <li><i class="fa fa-phone" aria-hidden="true"></i> Call : 01234567898</li>
             <li><i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:info@example.com">info@example.com</a></li>
         </ul>
@@ -114,7 +124,7 @@
                                     </div>
                                 </ul>
                             </li>
-                            
+
                             <li class=" menu__item"><a class="menu__link" asp-action="Contact">Contact</a></li>
                         </ul>
                     </div>
