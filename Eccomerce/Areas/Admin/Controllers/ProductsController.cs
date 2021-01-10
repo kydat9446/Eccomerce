@@ -94,7 +94,7 @@ namespace Eccomerce.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["Catid"] = new SelectList(_context.typeProduct, "Id", "Id", product.Catid);
+            ViewData["Catid"] = new SelectList(_context.typeProduct, "Id", "Name", product.Catid);
             return View(product);
         }
 
