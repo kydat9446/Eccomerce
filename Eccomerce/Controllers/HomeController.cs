@@ -36,23 +36,23 @@ namespace Eccomerce.Controllers
             ViewBag.TShirt = tShirts;
             //Pant
             var Pant = (from products in _context.product
-                           where products.Catid == 2
-                           orderby products.Id descending
-                           select products
+                        where products.Catid == 2
+                        orderby products.Id descending
+                        select products
                            ).ToList();
             ViewBag.Pant = Pant;
             //Shoes
             var Shoes = (from products in _context.product
-                           where products.Catid == 3
-                           orderby products.Id descending
-                           select products
+                         where products.Catid == 3
+                         orderby products.Id descending
+                         select products
                            ).ToList();
             ViewBag.Shoes = Shoes;
             //Hoodie
             var Hoodie = (from products in _context.product
-                           where products.Catid == 4
-                           orderby products.Id descending
-                           select products
+                          where products.Catid == 4
+                          orderby products.Id descending
+                          select products
                            ).ToList();
             ViewBag.Hoodie = Hoodie;
 
@@ -61,11 +61,26 @@ namespace Eccomerce.Controllers
 
         public IActionResult Men()
         {
+            ViewBag.Products = _context.product;
             return View();
         }
 
-        public IActionResult Single()
+        public IActionResult Single(int? id)
         {
+            var product = _context.product.Where(item => item.Id == id).ToList();
+            ViewBag.Product = product;
+
+            var sameProducts = (from p in product
+                                join c in _context.product on p.Catid equals c.Catid
+                                orderby c.Id descending
+                                select c
+                                ).Take(4).ToList();
+            ViewBag.SameProducts = sameProducts;
+            var productsNew = (from p in _context.product
+                               orderby p.Id descending
+                               select p
+                             ).Take(8).ToList();
+            ViewBag.NewProducts = productsNew;
             return View();
         }
         public IActionResult About()
