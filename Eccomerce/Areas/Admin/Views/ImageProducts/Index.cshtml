@@ -1,0 +1,115 @@
+﻿@model Eccomerce.Areas.Admin.Models.ImageProduct
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<partial name="Create" />
+<partial name="Search" />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Name product
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ImageProduct item in ViewBag.ListImgProduct)
+        {
+            <tr>
+                <td>
+                    <img style="width:100px; height:50px;" id="Image" src="~/images/products/@Html.DisplayFor(modelItem => item.Name)" class="img-thumbnail">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.product.Name)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.Id">EDIT</a>
+                 <button class="btn btn-success" name="delete" id-img="@item.Id">DELETE</button>
+                    <button class="btn btn-warning" name="btn_update_stt" data-id="@item.Id" data-stt="@(item.Status==true?0:1)">
+                        @{ if (item.Status == true)
+                            {
+                                @:Hide
+                            }
+                            else
+                            {
+                                @:Show
+                            }
+
+                        }
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#Image').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#ful").change(function () {
+            readURL(this);
+        });
+    </script>
+    <script>
+        $('button[name=btn_update_stt]').click(function () {
+            var id = $(this).attr('data-id');
+            var stt = ($(this).attr('data-stt') == 0 ? false : true)
+            $.ajax({
+                method: "POST",
+                url: "../api/ImageProducts_API/UpdateStatus/",
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify({ "id": parseInt(id), "stt": stt })
+            })
+                .done(function (msg) {
+                    location.reload();
+                    //if (msg == '0') {
+                    //    alert("Update fail");
+                    //}
+                    //else {
+                    //    var r = JSON.parse(msg);
+                    //    if (r.stt == "True") {
+                    //        $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Hide');                  
+                    //    }
+                    //    else {
+                    //        $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Show');                         
+                    //    }         
+                    //}
+                });
+        })
+    </script>
+<script>
+    $('button[name=delete]').click(function () {
+        var id = $(this).attr('id-img');
+        $.ajax({
+            method: "DELETE",
+            url: "../api/ImageProducts_API/DeleteImageProduct/"+id,      
+        })
+            .done(function (msg) {       
+                location.reload();
+                alert("Delete success");
+            });
+    })
+</script>
+}

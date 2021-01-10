@@ -5,9 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\images\NewFolder\**" />
+    <Content Remove="wwwroot\images\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\images\NewFolder\**" />
+    <None Remove="wwwroot\images\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\images\product\" />
     <Folder Include="wwwroot\images\NewFolder\" />
+
   </ItemGroup>
 
   <ItemGroup>

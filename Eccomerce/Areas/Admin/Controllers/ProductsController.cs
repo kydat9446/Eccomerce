@@ -9,6 +9,7 @@ using Eccomerce.Areas.Admin.Data;
 using Eccomerce.Areas.Admin.Models;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace Eccomerce.Areas.Admin.Controllers
 {
@@ -51,7 +52,7 @@ namespace Eccomerce.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
-            ViewData["Catid"] = new SelectList(_context.typeProduct, "Id", "Id");
+            ViewData["Catid"] = new SelectList(_context.typeProduct, "Id", "Name");
             return View();
         }
 
@@ -168,5 +169,8 @@ namespace Eccomerce.Areas.Admin.Controllers
         {
             return _context.product.Any(e => e.Id == id);
         }
+
+        
+
     }
 }
