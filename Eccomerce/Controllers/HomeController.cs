@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Eccomerce.Controllers
 {
@@ -59,10 +60,16 @@ namespace Eccomerce.Controllers
             return View();
         }
 
-        public IActionResult Men()
+        public async Task<IActionResult> Men(string SearchString)
         {
-            ViewBag.Products = _context.product;
-            return View();
+            
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                return View(await _context.product.Where(m => m.Name.Contains(SearchString)).ToListAsync());
+            }
+            else
+                //ViewBag.Products = _context.product;
+                return View(await _context.product.ToListAsync());
         }
 
         public IActionResult Single(int? id)

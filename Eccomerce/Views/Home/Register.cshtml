@@ -8,6 +8,14 @@
                 <h3 class="agileinfo_sign">Sign Up <span>Now</span></h3>
                 <form asp-controller="Home" asp-action="Register" method="post">
                     <div class="styled-input agile-styled-input-top">
+                        <input asp-for="Username" required="">
+                        <label>Username</label>
+                        <span></span>
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <div class="styled-input agile-styled-input-top">
                         <input asp-for="Name" required="">
                         <label>Name</label>
                         <span></span>
@@ -23,9 +31,9 @@
 
                     @if (ViewBag.error != null)
                     {
-                      
-                            <span class="badge badge-danger">@ViewBag.error</span>
-                       
+
+                        <span class="badge badge-danger">@ViewBag.error</span>
+
                     }
 
                     <div class="styled-input">
