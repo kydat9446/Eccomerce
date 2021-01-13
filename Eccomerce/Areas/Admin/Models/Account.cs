@@ -17,6 +17,8 @@ namespace Eccomerce.Areas.Admin.Models
         [StringLength(50, MinimumLength = 2)]
         public string Name { get; set; }
         public string Image { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 2)]
         public string Address { get; set; }
         [Required]
         [StringLength(10, MinimumLength = 10)]
