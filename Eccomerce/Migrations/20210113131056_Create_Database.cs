@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Eccomerce.Migrations
 {
-    public partial class IntitalCreate : Migration
+    public partial class Create_Database : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace Eccomerce.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,7 +26,7 @@ namespace Eccomerce.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
                     Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -40,7 +40,7 @@ namespace Eccomerce.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
                     Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -57,7 +57,7 @@ namespace Eccomerce.Migrations
                     Username = table.Column<string>(nullable: true),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Image = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(maxLength: 50, nullable: false),
                     Phone = table.Column<string>(maxLength: 10, nullable: false),
                     Email = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
@@ -80,11 +80,11 @@ namespace Eccomerce.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    Image = table.Column<string>(nullable: false),
                     Price = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Status = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(maxLength: 100, nullable: false),
+                    Status = table.Column<string>(nullable: false),
                     Catid = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
