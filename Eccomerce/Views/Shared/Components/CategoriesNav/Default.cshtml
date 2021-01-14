@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Eccomerce.Areas.Admin.Models.TypeProduct>
+<ul class="multi-column-dropdown">
+    @foreach (var items in Model)
+    {
+        <li><a asp-action="Men">@items.Name</a></li>
+    }
+</ul>
