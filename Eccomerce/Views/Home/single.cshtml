@@ -82,14 +82,14 @@
 <!-- /banner_bottom_agile_info -->
 <div class="page-head_agile_info_w3l">
     <div class="container">
-        <h3>Single <span>Page </span></h3>
+        <h3>SẢN PHẨM</h3>
         <!--/w3_short-->
         <div class="services-breadcrumb">
             <div class="agile_inner_breadcrumb">
 
                 <ul class="w3_short">
-                    <li><a asp-controller="Home" asp-action="Index">Home</a><i>|</i></li>
-                    <li>Single Page</li>
+                    <li><a asp-controller="Home" asp-action="Index">Trang chủ</a><i>|</i></li>
+                    <li>Sản phẩm</li>
                 </ul>
             </div>
         </div>
@@ -115,10 +115,6 @@
             </div>
         </div>
         <div class="col-md-8 single-right-left simpleCart_shelfItem">
-            @foreach (var item in ViewBag.SameProducts)
-            {
-                <p>@item.Name</p>
-            }
             <h3>@ViewBag.Product[0].Name</h3>
             <p><span class="item_price">@ViewBag.Product[0].Price đ</span> <del>- 350 000đ</del></p>
             <div class="rating1">
@@ -135,38 +131,19 @@
                     <label for="rating1">1</label>
                 </span>
             </div>
-            <div class="description">
-                <h5>Check delivery, payment options and charges at your location</h5>
-                <form action="#" method="post">
-                    <input type="text" value="Enter pincode" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter pincode';}" required="">
-                    <input type="submit" value="Check">
-                </form>
-            </div>
             <div class="color-quality">
                 <div class="color-quality-right">
-                    <h5>Quality :</h5>
+                    <h5>Size :</h5>
                     <select id="country1" onchange="change_country(this.value)" class="frm-field required sect">
-                        <option value="null">5 Qty</option>
-                        <option value="null">6 Qty</option>
-                        <option value="null">7 Qty</option>
-                        <option value="null">10 Qty</option>
+                        <option value="null">S</option>
+                        <option value="null">M</option>
+                        <option value="null">L</option>
+                        <option value="null">XL</option>
+                        <option value="null">Over Size</option>
                     </select>
                 </div>
             </div>
-            <div class="occasional">
-                <h5>Types :</h5>
-                <div class="colr ert">
-                    <label class="radio"><input type="radio" name="radio" checked=""><i></i>Casual Shoes</label>
-                </div>
-                <div class="colr">
-                    <label class="radio"><input type="radio" name="radio"><i></i>Sneakers </label>
-                </div>
-                <div class="colr">
-                    <label class="radio"><input type="radio" name="radio"><i></i>Formal Shoes</label>
-                </div>
-                <div class="clearfix"> </div>
-            </div>
-            <div><a asp-controller="Home" asp-action="addCart" asp-route-id="@ViewBag.Product[0].Id" class="addProduct addProduct hvr-outline-out btn single-item">Add order</a>  </div>
+            <div style="margin-top: 14px"><a asp-controller="Home" asp-action="addCart" asp-route-id="@ViewBag.Product[0].Id" class="addProduct addProduct hvr-outline-out btn single-item">Add order</a>  </div>
 
             <ul class="social-nav model-3d-0 footer-social w3_agile_social single_page_w3ls">
                 <li class="share">Share On : </li>

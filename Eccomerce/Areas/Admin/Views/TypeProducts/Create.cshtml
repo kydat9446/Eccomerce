@@ -7,7 +7,7 @@
 
 
 
-<h4>@(ViewContext.RouteData.Values["id"]!=null?"Edit":"Add")</h4>
+<h4>@(ViewContext.RouteData.Values["id"]!=null?"Chỉnh sửa danh mục":"Thêm danh mục mới")</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,27 +19,27 @@
                 <input type="hidden" asp-for="Id" />
             }
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Tên danh mục</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+                        <input checked asp-for="Status" /> Trạng thái
                     </label>
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="@(ViewContext.RouteData.Values["id"]!=null?"Update":"Add New")" class="btn btn-default" />
+                <input type="submit" value="@(ViewContext.RouteData.Values["id"]!=null?"Update":"Add New")" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
+@*<div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

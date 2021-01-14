@@ -15,11 +15,16 @@ namespace Eccomerce.Areas.Admin.Models
         public string Username { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 2)]
+        [Display(Name = "Tên")]
         public string Name { get; set; }
         public string Image { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 2)]
+        [Display(Name = "Địa chỉ")]
         public string Address { get; set; }
         [Required]
         [StringLength(10, MinimumLength = 10)]
+        [Display(Name = "Số điện thoại")]
         public string Phone { get; set; }
         [Required]
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}")]
@@ -33,6 +38,7 @@ namespace Eccomerce.Areas.Admin.Models
         public string ConfirmPassword { get; set; }
         public int Catid { get; set; }
         [ForeignKey("Catid")]
+        [Display(Name = "Loại tài khoản")]
         public virtual TypeAccount TypeA { get; set; }
     }
 }
