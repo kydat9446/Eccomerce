@@ -121,11 +121,11 @@
                                         </div>
                                         <div class="col-sm-3 multi-gd-img">
                                             <ul class="multi-column-dropdown">
-                                                <li><a asp-action="Men">Tất cả sản phẩm</a></li>
+                                                <li><a asp-action="Men" asp-route-id="0">Tất cả sản phẩm</a></li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-3 multi-gd-img">
-                                            @await Component.InvokeAsync("CategoriesNav")
+                                            @await Component.InvokeAsync("CategoriesNav",true)
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>

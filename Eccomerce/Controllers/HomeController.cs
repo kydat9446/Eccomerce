@@ -60,16 +60,18 @@ namespace Eccomerce.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Men(string SearchString)
+        public async Task<IActionResult> Men(int? id,string SearchString)
         {
             
             if (!String.IsNullOrEmpty(SearchString))
             {
                 return View(await _context.product.Where(m => m.Name.Contains(SearchString)).ToListAsync());
             }
-            else
-                //ViewBag.Products = _context.product;
-                return View(await _context.product.ToListAsync());
+            if (id != 0)
+            {
+                return View(await _context.product.Where(m => m.Catid==id).ToListAsync());
+            }
+            return View(await _context.product.ToListAsync());
         }
 
         public IActionResult Single(int? id)

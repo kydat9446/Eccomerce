@@ -2,6 +2,6 @@
 <ul class="multi-column-dropdown">
     @foreach (var items in Model)
     {
-        <li><a asp-action="Men">@items.Name</a></li>
+        <li><a asp-action="Men" asp-route-id="@items.Id">@items.Name</a></li>
     }
 </ul>
