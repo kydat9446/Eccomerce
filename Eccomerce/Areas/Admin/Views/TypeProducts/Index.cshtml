@@ -4,19 +4,26 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<h1>Quản lý danh mục sản phẩm</h1>
+<hr />
 
 <partial name="Create"/>
+<hr />
+
+
+<h4>Danh sách danh mục</h4>
 <p>
-    <a asp-action="Index" asp-route-id="">Create New</a>
+    <a class="btn btn-primary" asp-action="Index" asp-route-id="">Thêm danh mục</a>
+    
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                Name
+                Tên danh mục
             </th>
             <th>
-                Status
+                Trạng thái
             </th>
             <th></th>
         </tr>
@@ -31,15 +38,15 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.Id">Edit</a>
+                <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.Id">Chỉnh sửa</a>
                 <button class="btn btn-warning" name="btn_status" data-id="@item.Id" data-stt="@(item.Status==true?0:1)" data-name="@item.Name">
                     @{ if (item.Status==true)
                         {
-                            @:Hide
+                            @:Ẩn
                         }
                         else
                         {
-                            @:Show
+                            @:Hiện
                         }
 
                     }

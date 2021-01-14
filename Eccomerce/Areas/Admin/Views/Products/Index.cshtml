@@ -4,11 +4,12 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Index</h2>
+<h1>Quản lý sản phẩm</h1>
+<hr />
+<h4>Danh sách sản phẩm</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-outline-primary" asp-action="Create">Thêm mới</a>
 </p>
 <table class="table">
     <thead>
@@ -31,7 +32,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.TypeP)
             </th>
-            <th></th>
+            <th>
+            
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -41,10 +44,10 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <img id="Image" src="~/images/product/@Html.DisplayFor(modelItem => item.Image)" alt="no image" class="img-thumbnail" width="50%">               
+                <img id="Image" src="~/images/product/@Html.DisplayFor(modelItem => item.Image)" width="100hv" alt="no image" class="img-thumbnail">               
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @Html.DisplayFor(modelItem => item.Price)đ
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -53,12 +56,12 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TypeP.Id)
+                @Html.DisplayFor(modelItem => item.TypeP.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Chỉnh sửa</a> 
+                @*<a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a>*@ 
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
             </td>
         </tr>
 }

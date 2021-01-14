@@ -73,7 +73,7 @@ namespace Eccomerce.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 
             }
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         // GET: Admin/TypeProducts/Edit/5
@@ -124,7 +124,7 @@ namespace Eccomerce.Areas.Admin.Controllers
                 }
                 
             }
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         // GET: Admin/TypeProducts/Delete/5

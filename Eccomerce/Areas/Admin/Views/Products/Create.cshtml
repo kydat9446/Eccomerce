@@ -5,9 +5,11 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Thêm sản phẩm mới</h2>
+<div>
+    <a class="btn btn-outline-primary" asp-action="Index">Trở lại</a>
+</div>
 
-<h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -28,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" min="0" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -42,7 +44,7 @@
                     <option value="0">Out Of Stock</option>
                     <option value="1">Available</option>
                 </select>
-               
+
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -50,30 +52,27 @@
                 <select asp-for="Catid" class="form-control" asp-items="ViewBag.Catid"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Tạo mới" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-    function readURL(input, img) {
-        if (input.files && input.files[0]){
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('img').attr('src', e.target.result);
+    <script>
+        function readURL(input, img) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('img').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
             }
-            reader.readAsDataURL(input.files[0]);
         }
-    }
-    $("#ful").change(function () {
-        readURL(this,'#img');
-    })
-</script>
+        $("#ful").change(function () {
+            readURL(this, '#img');
+        })
+    </script>
 }
