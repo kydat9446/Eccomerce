@@ -49,7 +49,7 @@ namespace Eccomerce.Areas.Admin.Controllers
         // GET: Admin/Accounts/Create
         public IActionResult Create()
         {
-            ViewData["Catid"] = new SelectList(_context.typeAccount, "Id", "Id");
+            ViewData["Catid"] = new SelectList(_context.typeAccount, "Id", "Name");
             return View();
         }
 
@@ -83,7 +83,7 @@ namespace Eccomerce.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["Catid"] = new SelectList(_context.typeAccount, "Id", "Id", account.Catid);
+            ViewData["Catid"] = new SelectList(_context.typeAccount, "Id", "Name", account.Catid);
             return View(account);
         }
 
