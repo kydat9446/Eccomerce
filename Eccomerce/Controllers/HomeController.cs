@@ -200,11 +200,6 @@ namespace Eccomerce.Controllers
             return byte2String;
         }
 
-        public IActionResult ListCartEmty()
-        {
-            return View();
-        }
-
         //GET ALL PRODUCT
         public List<Product> getAllProduct()
         {
