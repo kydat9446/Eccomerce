@@ -23,7 +23,6 @@
 <div class="header" id="home">
     <div class="container">
         <ul>
-
             @if (@HttpContextAccessor.HttpContext.Session.GetString("Name") != null)
             {
                 <li> <i class="fa fa-unlock-alt" aria-hidden="true"></i>@HttpContextAccessor.HttpContext.Session.GetString("Name")</li>

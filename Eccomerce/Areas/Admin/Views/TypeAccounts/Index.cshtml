@@ -3,10 +3,48 @@
 @{
     ViewData["Title"] = "Index";
 }
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa Loại tài khoản</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="typeAcountName" class="col-form-label">Tên loại tài khoản</label>
+                        <input type="text" class="form-control" id="typeAcountName" name="txt_name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" hidden class="form-control" id="typeAcountId">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" name="btn_edit_name">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <h1>Quản lý loại tài khoản</h1>
 <hr />
-<partial name="Create"/>
+<partial name="Create" />
 <hr />
+
+@if (ViewBag.SuccesMgs != null)
+{
+    <div id="mgsAlert" class="alert alert-success" role="alert">
+        @ViewBag.SuccesMgs
+    </div>
+}
 <h4>Danh sách loại tài khoản</h4>
 <p>
     <a class="btn btn-primary" asp-action="Index" asp-route-id="">Thêm mới</a>
@@ -18,69 +56,127 @@
                 Tên Loại
             </th>
             <th>
-               Trạng Thái
+                Trạng Thái
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (TypeAccount item in ViewBag.ListTAccount)
-{
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.Id">Edit</a>
-                <button class="btn btn-warning" name="btn_update_stt" data-id="@item.Id" data-stt="@(item.Status==true?0:1)"
-                        data-name="@item.Name">
-                    @{ if (item.Status == true)
-                        {
-                        @:Hide
-                    }
-                        else
-                        {
-                        @:Show
-                    }
+        @foreach (TypeAccount item in ViewBag.ListTAccount)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @*<a class="btn btn-primary" asp-action="Index" asp-route-id="@item.Id">Edit</a>*@
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" value="@item.Id" name="btn_show">Chỉnh sửa</button>
+                    <button class="btn btn-warning" name="btn_update_stt" data-id="@item.Id" data-stt="@(item.Status==true?0:1)"
+                            data-name="@item.Name">
+                        @{ if (item.Status == true)
+                            {
+                                @:Ẩn
+                            }
+                            else
+                            {
+                                @:Hiện
+                            }
                         }
-                </button>
-            </td>
-        </tr>
-}
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-@section Scripts{ 
+@section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-    $('button[name=btn_update_stt]').click(function () {
-        var id = $(this).attr('data-id');
-        var name = $(this).attr('data-name');
-        var stt = ($(this).attr('data-stt') == 0 ? false : true)
-        $.ajax({
-            method: "PUT",
-            url: "../api/TypeAccounts_API/PutTypeAccount/" + id,
-            contentType: 'application/json; charset=UTF-8',
-            data: JSON.stringify({ "Id": parseInt(id), "Name": name, "Status": stt })
-        })
-            .done(function (msg) {
-                if (msg=='0') {
-                    aler = ('Update Fail');
-                }
-                else {
-                    var r = JSON.parse(msg);
-                    if (r.stt == 'True') {
-                        $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Ẩn');
+    <script>
+
+        setTimeout(function () {
+            $('#mgsAlert').fadeOut('slow');
+        }, 2000);
+
+        $('button[name=btn_update_stt]').click(function () {
+            var id = $(this).attr('data-id');
+            var name = $(this).attr('data-name');
+            var stt = ($(this).attr('data-stt') == 0 ? false : true)
+            $.ajax({
+                method: "PUT",
+                url: "../api/TypeAccounts_API/PutTypeAccount/" + id,
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify({ "Id": parseInt(id), "Name": name, "Status": stt })
+            })
+                .done(function (msg) {
+                    if (msg == '0') {
+                        aler = ('Update Fail');
                     }
                     else {
-                        $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Hiện');
+                        var r = JSON.parse(msg);
+                        if (r.stt == 'True') {
+                            $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Ẩn');
+                        }
+                        else {
+                            $('button[name=btn_update_stt][data-id=' + r.id + ']').html('Hiện');
+                        }
+                        alert('Cập nhật thành công');
+                        location.reload();
                     }
+                });
+        });
+
+
+        let url = '../api/TypeAccounts_API/GetTypeAccount/';
+
+        $('button[name=btn_show]').click(function () {
+            let id = this.value;
+            fetch(url + id, { method: 'GET' })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw Error(response.statusText);
+                    }
+                    // Read the response as json.
+                    return response.json();
+                })
+                .then(function (responseAsJson) {
+                    console.log(responseAsJson);
+                    document.querySelector('#typeAcountName').value = responseAsJson.name;
+                    document.querySelector('#typeAcountId').value = responseAsJson.id;
+                })
+                .catch(function (error) {
+                    console.log('Looks like there was a problem: \n', error);
+                });
+        });
+
+
+        let urlPut = '../api/TypeAccounts_API/PutTypeAccount/';
+        $('button[name=btn_edit_name]').click(function () {
+            let id = parseInt(document.querySelector('#typeAcountId').value);
+            let name = document.querySelector('#typeAcountName').value;
+            fetch(urlPut + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ Id: id, Name: name, Status: true })
+            })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw Error(response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(function (responseAsJson) {
+                    console.log(responseAsJson);
                     alert('Cập nhật thành công');
                     location.reload();
-                }
-            });
-    })
-</script>
+                })
+                .catch(function (error) {
+                    console.log('Looks like there was a problem: \n', error);
+                });
+        });
+
+    </script>
 }
