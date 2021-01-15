@@ -104,6 +104,7 @@ namespace Eccomerce.Controllers
         {
             return View();
         }
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
@@ -153,7 +154,7 @@ namespace Eccomerce.Controllers
                 if (data.Count() > 0)
                 {
                   
-                        HttpContext.Session.SetString("Name", data.FirstOrDefault().Name);
+                    HttpContext.Session.SetString("Name", data.FirstOrDefault().Name);
                     HttpContext.Session.SetInt32("idUser", data.FirstOrDefault().Id);
                     //Login admin
                     if (data[0].Catid == 2)

@@ -29,6 +29,10 @@ namespace Eccomerce.Areas.Admin.Controllers
             {
                 typeProduct = await _context.typeProduct.FirstOrDefaultAsync(m => m.Id == id);
             }
+            if (TempData["typeProductresult"] != null)
+            {
+                ViewBag.SuccesMgs = TempData["typeProductresult"];
+            }
             return View(typeProduct);
         }
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -73,6 +77,7 @@ namespace Eccomerce.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 
             }
+            TempData["typeProductresult"] = "Thêm mới thành công";
             return RedirectToAction("Index");
         }
 
