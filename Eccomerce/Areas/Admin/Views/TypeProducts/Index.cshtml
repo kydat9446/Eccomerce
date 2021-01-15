@@ -7,14 +7,19 @@
 <h1>Quản lý danh mục sản phẩm</h1>
 <hr />
 
-<partial name="Create"/>
+<partial name="Create" />
 <hr />
-
+@if (ViewBag.SuccesMgs != null)
+{
+    <div id="mgsAlert" class="alert alert-success" role="alert">
+        @ViewBag.SuccesMgs
+    </div>
+}
 
 <h4>Danh sách danh mục</h4>
 <p>
     <a class="btn btn-primary" asp-action="Index" asp-route-id="">Thêm danh mục</a>
-    
+
 </p>
 <table class="table">
     <thead>
@@ -29,62 +34,67 @@
         </tr>
     </thead>
     <tbody>
-@foreach (TypeProduct item in ViewBag.ListProduct) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.Id">Chỉnh sửa</a>
-                <button class="btn btn-warning" name="btn_status" data-id="@item.Id" data-stt="@(item.Status==true?0:1)" data-name="@item.Name">
-                    @{ if (item.Status==true)
-                        {
-                            @:Ẩn
-                        }
-                        else
-                        {
-                            @:Hiện
-                        }
+        @foreach (TypeProduct item in ViewBag.ListProduct)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.Id">Chỉnh sửa</a>
+                    <button class="btn btn-warning" name="btn_status" data-id="@item.Id" data-stt="@(item.Status==true?0:1)" data-name="@item.Name">
+                        @{ if (item.Status == true)
+                            {
+                                @:Ẩn
+                            }
+                            else
+                            {
+                                @:Hiện
+                            }
 
-                    }
-                </button>
-            </td>
-        </tr>
-}
+                        }
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-@section Scripts{ 
+@section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-    $('button[name=btn_status]').click(function () {
-        var id = $(this).attr('data-id');
-        var name = $(this).attr('data-name');
-        var stt = ($(this).attr('data-stt') == 0 ? false : true)
-        $.ajax({
-            method: "PUT",
-            url: "../api/TypeProducts_API/PutTypeProduct/" + id,
-            contentType: 'application/json; charset=UTF-8',
-            data: JSON.stringify({ "Id": parseInt(id), "Name": name, "Status":stt})
-        })
-            .done(function (msg) {
-                if (msg == '0') {
-                    alert('Update Fail');
-                }
-                else {
-                    var r = JSON.parse(msg);
-                    if (r.stt == 'True') {
-                        $('button[name=btn_status][data-id=' + r.id + ']').html('Hide');
+    <script>
+
+        setTimeout(function () {
+            $('#mgsAlert').fadeOut('slow');
+        }, 2000);
+        $('button[name=btn_status]').click(function () {
+            var id = $(this).attr('data-id');
+            var name = $(this).attr('data-name');
+            var stt = ($(this).attr('data-stt') == 0 ? false : true)
+            $.ajax({
+                method: "PUT",
+                url: "../api/TypeProducts_API/PutTypeProduct/" + id,
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify({ "Id": parseInt(id), "Name": name, "Status": stt })
+            })
+                .done(function (msg) {
+                    if (msg == '0') {
+                        alert('Update Fail');
                     }
                     else {
-                        $('button[name=btn_status][data-id=' + r.id + ']').html('Show');
+                        var r = JSON.parse(msg);
+                        if (r.stt == 'True') {
+                            $('button[name=btn_status][data-id=' + r.id + ']').html('Hide');
+                        }
+                        else {
+                            $('button[name=btn_status][data-id=' + r.id + ']').html('Show');
+                        }
+                        alert('Update Success');
+                        location.reload();
                     }
-                    alert('Update Success');
-                    location.reload();
-                }
-            })
-    })
-</script>
+                })
+        })
+    </script>
 }

@@ -35,6 +35,10 @@ namespace Eccomerce.Areas.Admin.Controllers
             {
                 typeAccount = await _context.typeAccount.FirstOrDefaultAsync(m => m.Id == id);
             }
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccesMgs = TempData["result"];
+            }
             return View(typeAccount);
         }
 
@@ -75,6 +79,7 @@ namespace Eccomerce.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 
             }
+            TempData["result"] = "Thêm mới thành công";
             return RedirectToAction("Index");
         }
 
